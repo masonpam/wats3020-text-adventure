@@ -1,60 +1,45 @@
 /* JS for WATS 3020 Text Adventure */
+
+//Collect data from user//
+
 let playerName = "";
 let choiceList = [];
 let currentPage = null;
 
-///////////////////////////////////////////////////
-//////// TODOs ///////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// Fill in the blanks below to complete each TODO task.                       //
-////////////////////////////////////////////////////////////////////////////////
-
-// TODO: Prompt the user for their name. Store the name in the variable `playerName`.
 
 
-
-// TODO: Create a function called `getCurrentPage()`. It should accept one
-// parameter, which is the `slug` for the current page. This function will fetch
-// the current page and return a page object using the `slug` value for a key.
+playerName = prompt("What is your name?");
 
 
-
-// TODO: Create a function called `recordChoice()` that will accept a `slug`
-// parameter and add it to the `choiceList` Array (probably using `push()`).
-
-
-
-// TODO: Create a function called `undoChoice()` that will remove the last
-// `slug` in the `choiceList` Array and then will return the last `slug` in the
-// `choiceList` Array.
+function getCurrentPage(slug){
+  //Fetch current page and return page object//
+  currentPage = storyData[slug];
+  return currentPage;
+}
 
 
-
-// TODO: Create a function called `changePage()` that accepts a parameter called
-// `slug` and which handles "turning the page" in three steps:
-//  1. It should call the `recordChoice()` function (and give it the `slug` as
-//     a parameter.
-//  2. It should set the `currentPage` value by calling the `getCurrentPage()`
-//     function (and give it the `slug` as a parameter).
-//  3. It should invoke the `updatePage()` function (and give it the
-//     `currentPage` object as a parameter).
+function recordChoice(slug){
+  //Take slug parameter and add to slug Array//
+  choiceList.push(slug);
+  console.log(`Added {slug} to choiceList Array`);
+} 
 
 
+function undoChoice(){
+  choiceList.pop //Removes the last choiceList Array item//
+  console.log(`Returning to last page`);
+  return choiceList[choiceList.length-1];
+}
 
-///////////////////////////////////////////////////
-//////// Story Data //////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// Only edit this data to change/enhance the story. Be sure to watch for how  //
-// changes to the story data might affect the mechanisms that output the      //
-// story.                                                                     //
-////////////////////////////////////////////////////////////////////////////////
-// NOTE: The data below is organized as a JS Object. The content for each     //
-// page is stored using a "slug" -- a short alphanumeric identifier (for      //
-// example, "p1", "p2", "homeEnd", etc.). Each page contains a `text`         //
-// property and a `choices` property. The `choices` property is an Array that //
-// contains all of the choices, including the slug that each choice should    //
-// link to.                                                                   //
-////////////////////////////////////////////////////////////////////////////////
+
+function changePage(slug){
+  //Record the latest choice//
+  recordChoice(slug);
+  currentPage = getCurrentPage(slug);
+  updatePage(currentPage);
+}
+
+//////// Story Data /////////////
 
 var storyData = {
     title: "The Crow and the Fox",
@@ -258,5 +243,6 @@ undo.addEventListener('click', function(e){
 })
 
 currentPage = storyData.p1;
+recordChoice('p1');
 updatePage(currentPage);
 
